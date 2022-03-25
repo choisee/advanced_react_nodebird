@@ -26,7 +26,7 @@ const Signup = () => {
 		[password],
 	);
 
-	const [term, setTerm] = useState("");
+	const [term, setTerm] = useState(false);
 	const [termError, setTermError] = useState(false);
 	const onChangeTerm = useCallback(
 		(e) => {
@@ -62,7 +62,7 @@ const Signup = () => {
 			return setTermError(true);
 		}
 		console.log(id, nickname, password);
-	}, []);
+	}, [id, nickname, password, term]);
 
 	return (
 		<AppLayout>

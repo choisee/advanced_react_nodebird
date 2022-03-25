@@ -1,11 +1,13 @@
-import React, {useCallback} from "react";
-import AppLayout from "../components/AppLayouts";
-import Head from "next/head";
-import {Button, Card, Avatar} from "antd";
+import React, { useCallback } from "react";
+import { Button, Card, Avatar } from "antd";
+import { useDispatch } from "react-redux";
+import { logoutAction } from "../reducers";
 
-const UserProfile = ({setIsLoggedIn}) => {
+const UserProfile = () => {
+    const dispatch = useDispatch();
+    
     const onLogOut = useCallback(() => {
-        setIsLoggedIn(false);
+        dispatch(logoutAction());
     },[]);
 
     return (
@@ -19,14 +21,6 @@ const UserProfile = ({setIsLoggedIn}) => {
             <Card.Meta avatar={<Avatar>CS</Avatar>} title="choisee"/>
             <Button onClick={onLogOut}>로그아웃</Button>
         </Card>
-            {/*
-            <Head>
-                <title>내 프로필 | NodeBird</title>
-            </Head>
-            <AppLayout>
-                <div>내 프로필</div>
-            </AppLayout>
-            */}
         </>
 
     );

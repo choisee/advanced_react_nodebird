@@ -14,6 +14,10 @@
 - propTypes validation
 - basic nextjs : user pages dir
 - component design & thinking
+- use react-redux-wrapper (cf. https://github.com/kirill-konshin/next-redux-wrapper)
+- set redux
+- make reducer(initial state, actions)
+- use action creator(login, logout), useSelector, useDispatch, delete props parameter
 
 ------------
 #### Used Commands
@@ -23,6 +27,7 @@
 - npm i -D eslint eslint-plugin-import eslint-plugin-react eslint-plugin-react-hooks
 - npm i antd styled-components @ant-design/icons
 - npm i -D prettier (add personally)
+- npm i next-redux-wrapper@6 react-redux redux
 
 ------------
 ###### watched ZeroCho Contents on Inflearn :)
