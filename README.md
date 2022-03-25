@@ -18,6 +18,7 @@
 - set redux
 - make reducer(initial state, actions)
 - use action creator(login, logout), useSelector, useDispatch, delete props parameter
+- set redux-devtools-extension for debugging history (ex. Diff, State, ...)
 
 ------------
 #### Used Commands
@@ -28,6 +29,7 @@
 - npm i antd styled-components @ant-design/icons
 - npm i -D prettier (add personally)
 - npm i next-redux-wrapper@6 react-redux redux
+- npm i redux-devtools-extension
 
 ------------
 ###### watched ZeroCho Contents on Inflearn :)

@@ -1,3 +1,5 @@
+import { HYDRATE } from "next-redux-wrapper";
+
 const initialState = {
     user: {
         isLoggedIn: false,
@@ -26,6 +28,10 @@ export const logoutAction = () => {
 // 이전상태와 액션을 통해서 다음 상태를 만들어 내는 함수, (이전상태, 액션) => 다음상태
 const rootReducer = (state = initialState, action) => {
     switch (action.type){
+        case HYDRATE:
+            console.log('HYDRATE', action)
+            return {...state, action};
+            // return {...state, action.payload};
         case 'LOG_IN':
             return {
                 ...state,
@@ -45,7 +51,7 @@ const rootReducer = (state = initialState, action) => {
                 }
             }
         default:
-            return state;
+            return state; // reducer 초기화할때 default 실행되며 initialStated 실행됨
     }
 };
 

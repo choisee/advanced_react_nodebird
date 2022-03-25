@@ -1,10 +1,15 @@
-import {createStore} from "redux";
+import {applyMiddleware, createStore, compose } from "redux";
 import {createWrapper} from 'next-redux-wrapper';
 import reducer from '../reducers';
-
+import { composeWithDevTools} from "redux-devtools-extension";
 
 const configureStore = () => {
-    const store = createStore(reducer);
+    const middlewares = [];
+    const enhancer = process.env.NODE_ENV === 'production'
+        ? compose(applyMiddleware(...middlewares))
+        : composeWithDevTools(applyMiddleware(...middlewares)) // only develop mode - redux debugging 시 히스토리 추적을 위한 적용
+
+    const store = createStore(reducer, enhancer);
     store.dispatch({
        type: 'CHANGE_NICKNAME',
        data: 'ttest',

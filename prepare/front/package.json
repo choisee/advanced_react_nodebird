@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next"
+    "dev": "next -p 3060"
   },
   "author": "choisee",
   "license": "ISC",
@@ -16,6 +16,7 @@
     "prop-types": "^15.7.2",
     "react-redux": "^7.2.6",
     "redux": "^4.1.2",
+    "redux-devtools-extension": "^2.13.9",
     "styled-components": "^5.3.3"
   },
   "devDependencies": {
