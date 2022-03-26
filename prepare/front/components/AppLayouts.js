@@ -13,7 +13,7 @@ const SearchInput = styled(Input.Search)`
 
 const AppLayout = ({ children }) => {
 
-    const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+    const { isLoggedIn } = useSelector((state) => state.user);
 
     return (
         <div>
@@ -41,7 +41,7 @@ const AppLayout = ({ children }) => {
                 </Col>
                 <Col xs={24} md={6}>
                     {/* 오른쪽 메뉴 */}
-                    <a href='https://github.com/choisee?tab=repositories' target='_black' rel='noreferrer noopener'>Made by Choisee</a>
+                    <a href='https://github.com/choisee/advanced_react_nodebird' target='_black' rel='noreferrer noopener'>Made by Choisee</a>
                 </Col>
             </Row>
         </div>

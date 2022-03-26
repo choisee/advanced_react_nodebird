@@ -19,6 +19,7 @@
 - make reducer(initial state, actions)
 - use action creator(login, logout), useSelector, useDispatch, delete props parameter
 - set redux-devtools-extension for debugging history (ex. Diff, State, ...)
+- separate redux reducer and use combineReducers
 
 ------------
 #### Used Commands
