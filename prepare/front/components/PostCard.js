@@ -11,6 +11,7 @@ import {
 import { useSelector } from "react-redux";
 import PostImages from "./PostImages";
 import CommentForm from "./CommentForm";
+import PostCardContent from "./PostCardContent";
 
 const PostCard = ({post}) => {
 	
@@ -32,7 +33,7 @@ const PostCard = ({post}) => {
 	return (
 		<div style={{marginBottom: 20}}>
 			<Card
-			cover={post.Images[0] && <PostImages image={post.Images} />}
+			cover={post.Images[0] && <PostImages images={post.Images} />}
 			actions={[
 				<RetweetOutlined key="retweet" />,
 				liked
@@ -56,7 +57,7 @@ const PostCard = ({post}) => {
 				<Card.Meta
 					avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
 					title={post.User.nickname}
-					description={post.content}
+					description={<PostCardContent postData={post.content}/>}
 				/>
 			</Card>
 			{commentFormOpened && (
@@ -85,7 +86,7 @@ const PostCard = ({post}) => {
 		</div>
 	);
 };
-PostCard.PropTypes = {
+PostCard.propTypes = {
 	post: PropTypes.shape({
 		id: PropTypes.number,
 		User: PropTypes.object,

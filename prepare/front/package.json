@@ -15,6 +15,7 @@
     "next-redux-wrapper": "^6.0.2",
     "prop-types": "^15.7.2",
     "react-redux": "^7.2.6",
+    "react-slick": "^0.28.1",
     "redux": "^4.1.2",
     "redux-devtools-extension": "^2.13.9",
     "styled-components": "^5.3.3"

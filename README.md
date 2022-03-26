@@ -21,6 +21,9 @@
 - set redux-devtools-extension for debugging history (ex. Diff, State, ...)
 - separate redux reducer and use combineReducers
 - use optional chaining
+- use createGlobalStyle to change origin style (ex. using Slick)
+- make directory for separating component and styles (ex. ImagesZoom)
+- use regular expression for hashtags (cf. https://regexr.com/)
 
 ------------
 #### Used Commands
@@ -32,6 +35,7 @@
 - npm i -D prettier (add personally)
 - npm i next-redux-wrapper@6 react-redux redux
 - npm i redux-devtools-extension
+- npm i react-slick
 
 ------------
 ###### watched ZeroCho Contents on Inflearn :)
