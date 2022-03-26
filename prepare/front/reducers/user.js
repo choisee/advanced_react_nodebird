@@ -1,6 +1,6 @@
 export const initialState = {
     isLoggedIn: false,
-    user: null,
+    me: null,
     signUpData: {},
     loginData: {}
 }
