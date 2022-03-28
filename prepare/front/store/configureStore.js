@@ -2,9 +2,20 @@ import {applyMiddleware, createStore, compose } from "redux";
 import {createWrapper} from 'next-redux-wrapper';
 import reducer from '../reducers';
 import { composeWithDevTools} from "redux-devtools-extension";
+import thunkMiddleware from 'redux-thunk';
+
+// redux-thunk 구소스 (cf. https://github.com/reduxjs/redux-thunk)
+const loggerMiddleware = ({dispatch, getState}) => (next) => (action) => {
+    console.log(action);
+    // // 지연 함수라 나중에 수행
+    // if(typeof action === 'function') {
+    //     return action(dispatch, getState);
+    // }
+    return next(action);
+}
 
 const configureStore = () => {
-    const middlewares = [];
+    const middlewares = [thunkMiddleware, loggerMiddleware];
     const enhancer = process.env.NODE_ENV === 'production'
         ? compose(applyMiddleware(...middlewares))
         : composeWithDevTools(applyMiddleware(...middlewares)) // only develop mode - redux debugging 시 히스토리 추적을 위한 적용
@@ -48,3 +59,7 @@ export default wrapper;
 
 // redux가 개발모드일때는 action 히스토리를 가지고 있어 메모리 저장된 데이터가 계속 커짐
 // 상용모드일때는 히스토리 필요없어서 메모리 정리를 계속 해줘 메모리 이슈가 없음
+
+// redux의 기능을 middleware로 확장할 수 있다
+// thunk 는 여러번 dispatch 하는 기능만 있음
+// saga 는 delay, 로그인 클릭 두번을 하면 takelatest로 가장 마지막 요청만 보내는 기능, 스크롤 할때 비동기 요청을 throw 하는 기능 throw tool/debounce 등

@@ -24,6 +24,7 @@
 - use createGlobalStyle to change origin style (ex. using Slick)
 - make directory for separating component and styles (ex. ImagesZoom)
 - use regular expression for hashtags (cf. https://regexr.com/)
+- test redux-thunk
 
 ------------
 #### Used Commands
@@ -36,6 +37,7 @@
 - npm i next-redux-wrapper@6 react-redux redux
 - npm i redux-devtools-extension
 - npm i react-slick
+- npm i redux-thunk
 
 ------------
 ###### watched ZeroCho Contents on Inflearn :)
