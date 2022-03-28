@@ -25,6 +25,9 @@
 - make directory for separating component and styles (ex. ImagesZoom)
 - use regular expression for hashtags (cf. https://regexr.com/)
 - test redux-thunk
+- about generator to use redux-saga
+- shortid and faker.js for key and dummy data
+- use redux-saga
 
 ------------
 #### Used Commands
@@ -37,7 +40,13 @@
 - npm i next-redux-wrapper@6 react-redux redux
 - npm i redux-devtools-extension
 - npm i react-slick
-- npm i redux-thunk
+- npm i redux-thunk (just for test, rm-ed)
+- npm i redux-saga
+- npm i axios
+- npm i -D babel-eslint eslint-config-airbnb eslint-plugin-import
+- npm i -D eslint-plugin-react-hooks
+- npm i -D eslint-plugin-jsx-a11y
+- npm i shortid
 
 ------------
 ###### watched ZeroCho Contents on Inflearn :)

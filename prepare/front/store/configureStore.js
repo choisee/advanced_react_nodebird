@@ -1,8 +1,9 @@
-import {applyMiddleware, createStore, compose } from "redux";
-import {createWrapper} from 'next-redux-wrapper';
-import reducer from '../reducers';
-import { composeWithDevTools} from "redux-devtools-extension";
-import thunkMiddleware from 'redux-thunk';
+import { applyMiddleware, createStore, compose } from "redux";
+import { createWrapper } from "next-redux-wrapper";
+import reducer from "../reducers";
+import { composeWithDevTools } from "redux-devtools-extension";
+import createSagaMiddleware from "redux-saga";
+import rootSaga from "../sagas/index";
 
 // redux-thunk 구소스 (cf. https://github.com/reduxjs/redux-thunk)
 const loggerMiddleware = ({dispatch, getState}) => (next) => (action) => {
@@ -15,12 +16,15 @@ const loggerMiddleware = ({dispatch, getState}) => (next) => (action) => {
 }
 
 const configureStore = () => {
-    const middlewares = [thunkMiddleware, loggerMiddleware];
+    const sagaMiddleware = createSagaMiddleware();
+    const middlewares = [sagaMiddleware, loggerMiddleware];
     const enhancer = process.env.NODE_ENV === 'production'
         ? compose(applyMiddleware(...middlewares))
         : composeWithDevTools(applyMiddleware(...middlewares)) // only develop mode - redux debugging 시 히스토리 추적을 위한 적용
 
     const store = createStore(reducer, enhancer);
+    store.sagaTask = sagaMiddleware.run(rootSaga);
+
     store.dispatch({
        type: 'CHANGE_NICKNAME',
        data: 'ttest',
@@ -62,4 +66,4 @@ export default wrapper;
 
 // redux의 기능을 middleware로 확장할 수 있다
 // thunk 는 여러번 dispatch 하는 기능만 있음
-// saga 는 delay, 로그인 클릭 두번을 하면 takelatest로 가장 마지막 요청만 보내는 기능, 스크롤 할때 비동기 요청을 throw 하는 기능 throw tool/debounce 등
+// saga 는 delay, 로그인 클릭 두번을 하면 takeLatest로 가장 마지막 요청만 보내는 기능, 스크롤 할때 비동기 요청을 throw 하는 기능 throttle/debounce 등
