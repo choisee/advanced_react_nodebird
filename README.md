@@ -28,6 +28,9 @@
 - about generator to use redux-saga
 - shortid and faker.js for key and dummy data
 - use redux-saga
+- use immer (use-immer for hooks)
+- set dummy data using faker@5 (cf. dummy images https://placeholder.com/)
+- study redux-toolkit for shrink redux source code lines
 
 ------------
 #### Used Commands
@@ -47,6 +50,8 @@
 - npm i -D eslint-plugin-react-hooks
 - npm i -D eslint-plugin-jsx-a11y
 - npm i shortid
+- npm i immer
+- npm i -D faker@5
 
 ------------
 ###### watched ZeroCho Contents on Inflearn :)

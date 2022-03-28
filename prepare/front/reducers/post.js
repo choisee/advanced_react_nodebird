@@ -1,4 +1,6 @@
-import shortId from 'shortid'
+import shortId from "shortid";
+import produce from "immer";
+import faker from "faker";
 
 export const initialState = {
     mainPosts: [{
@@ -46,6 +48,27 @@ export const initialState = {
     addCommentError: null,
 }
 
+initialState.mainPosts = initialState.mainPosts.concat(
+	Array(20).fill().map(() => ({
+		id: shortId.generate(),
+		User: {
+			id: shortId.generate(),
+			nickname: faker.name.findName()
+		},
+		content: faker.lorem.paragraph(),
+		Images: [{
+			src: faker.image.imageUrl(),
+		}],
+		Comments: [{
+			User: {
+				id: shortId.generate(),
+				nickname: faker.name.findName(),
+			},
+			content: faker.lorem.sentence(),
+		}],
+	})),
+);
+
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
 export const ADD_POST_FAILURE = "ADD_POST_FAILURE";
@@ -91,83 +114,87 @@ const dummyComment = (data) => ({
 	},
 });
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = initialState, action) => produce(state, (draft) => {
 	switch (action.type) {
-		case ADD_POST_SUCCESS:
-			return {
-				...state,
-				mainPosts: [dummyPost(action.data), ...state.mainPosts], // dummyPost 게시글 최상단에 추가되게 처리함
-				addPostLoading: false,
-				addPostDone: true,
-				addPostError: null,
-			};
+		// case LOAD_POSTS_REQUEST:
+		// 	draft.loadPostsLoading = true;
+		// 	draft.loadPostsDone = false;
+		// 	draft.loadPostsError = null;
+		// 	break;
+		// case LOAD_POSTS_SUCCESS:
+		// 	draft.loadPostsLoading = false;
+		// 	draft.loadPostsDone = true;
+		// 	draft.mainPosts = action.data.concat(draft.mainPosts);
+		// 	draft.hasMorePosts = draft.mainPosts.length < 50;
+		// 	break;
+		// case LOAD_POSTS_FAILURE:
+		// 	draft.loadPostsLoading = false;
+		// 	draft.loadPostsError = action.error;
+		// 	break;
 		case ADD_POST_REQUEST:
-			console.log("reduces-post-ADD_POST_REQUEST");
-			return {
-				...state,
-				addPostLoading: true,
-				addPostDone: false,
-				addPostError: null,
-			};
+			draft.addPostLoading = true;
+			draft.addPostDone = false;
+			draft.addPostError = null;
+			break;
+		case ADD_POST_SUCCESS:
+			draft.addPostLoading = false;
+			draft.addPostDone = true;
+			draft.mainPosts.unshift(dummyPost(action.data));
+			break;
 		case ADD_POST_FAILURE:
-			return {
-				...state,
-				addPostLoading: false,
-				addPostError: action.error,
-			};
-
-
+			draft.addPostLoading = false;
+			draft.addPostError = action.error;
+			break;
 		case REMOVE_POST_REQUEST:
-			return {
-				...state,
-				removePostLoading: true,
-				removePostDone: false,
-				removePostError: null,
-			};
+			draft.removePostLoading = true;
+			draft.removePostDone = false;
+			draft.removePostError = null;
+			break;
 		case REMOVE_POST_SUCCESS:
-			console.log('REMOVE_POST_SUCCESS--', state)
-			return {
-				...state,
-				removePostLoading: false,
-				removePostDone: true,
-				mainPosts: state.mainPosts.filter((v) => v.id !== action.data),
-			};
+			draft.removePostLoading = false;
+			draft.removePostDone = true;
+			draft.mainPosts = draft.mainPosts.filter((v) => v.id !== action.data);
+			break;
 		case REMOVE_POST_FAILURE:
-			return {
-				removePostLoading: false,
-				removePostError: action.error,
-			};
-
-		case ADD_COMMENT_SUCCESS: {
-			const postIndex = state.mainPosts.findIndex((v) => v.id === action.data.postId);
-			const post = { ...state.mainPosts[postIndex] };
-			post.Comments = [dummyComment(action.data.content), ...post.Comments];
-			const mainPosts = [...state.mainPosts];
-			mainPosts[postIndex] = post;
-			return {
-				...state,
-				mainPosts : mainPosts,
-				addCommentLoading: false,
-				addCommentDone: true,
-			};
-		}
+			draft.removePostLoading = false;
+			draft.removePostError = action.error;
+			break;
 		case ADD_COMMENT_REQUEST:
-			return {
-				...state,
-				addCommentLoading: true,
-				addCommentDone: false,
-				addCommentError: null,
-			};
+			draft.addCommentLoading = true;
+			draft.addCommentDone = false;
+			draft.addCommentError = null;
+			break;
+		case ADD_COMMENT_SUCCESS: {
+			const post = draft.mainPosts.find((v) => v.id === action.data.postId);
+			post.Comments.unshift(dummyComment(action.data.content));
+			draft.addCommentLoading = false;
+			draft.addCommentDone = true;
+			break;
+			// const postIndex = state.mainPosts.findIndex((v) => v.id === action.data.postId);
+			// const post = { ...state.mainPosts[postIndex] };
+			// post.Comments = [dummyComment(action.data.content), ...post.Comments];
+			// const mainPosts = [...state.mainPosts];
+			// mainPosts[postIndex] = post;
+			// return {
+			//   ...state,
+			//   mainPosts,
+			//   addCommentLoading: false,
+			//   addCommentDone: true,
+			// };
+		}
 		case ADD_COMMENT_FAILURE:
-			return {
-				...state,
-				addCommentLoading: false,
-				addCommentError: action.error,
-			};
-
+			draft.addCommentLoading = false;
+			draft.addCommentError = action.error;
+			break;
 		default:
-			return state;
+			break;
 	}
-};
+});
 
 export default reducer;
+
+// reducer 란, 이전 상태를 액션을 통해 다은 상태로 만들어내는 함수 (단, 불변성을 지키면서)
+// immer는 state가 draft로 바뀌고 immer가 알아서 불변성 지켜서 state를 만들어 주기 때문에 draft를 조작하면 됨 (단, state를 조직하면 안됨)
+// immer 쓸떄 배열은 unshift 사용 (ex. draft.mainPosts.unshift(dummyPost(action.data)) )
+// immer 쓸떄 break 반드시 작성할 것
+// 첫 화살표 return produce 를 의미함 : const reducer = (state = initialState, action) => produce(state, (draft) => {
