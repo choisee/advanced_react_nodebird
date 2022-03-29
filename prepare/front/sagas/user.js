@@ -25,9 +25,6 @@ function logInAPI(data) {
 function logOutAPI() {
     return axios.post('/api/logout')
 }
-function signUpAPI(data) {
-    return axios.post('/api/signUp')
-}
 
 function* logIn(action) {
     try {
@@ -62,14 +59,18 @@ function* logOut() {
     }
 }
 
-function* signUp() {
+function signUpAPI(data) {
+    return axios.post('http://localhost:3065/user', data); // data = {email,password,nickname}
+}
+
+function* signUp(action) {
     try {
         console.log('saga-logIn')
 
-        yield delay(1000);
-        throw new Error();
+        // yield delay(1000);
+        // throw new Error();
 
-        const result = yield fork(logOutAPI)
+        const result = yield call(signUpAPI, action.data);
         yield put ({
             type: SIGN_UP_SUCCESS,
             data: result.data

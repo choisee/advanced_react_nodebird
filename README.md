@@ -33,6 +33,9 @@
 - study redux-toolkit for shrink redux source code lines
 - study react-virtualized for infinite scrolling (ex. instagram)
 - add load data when web page scrolled (calculate when to load)
+- run 'npx sequelize init' after install sequelize sequelize-cli
+- make models and run 'npx sequelize db:create'
+- use nodemon for auto refresh server
 
 ------------
 #### Used Commands
@@ -54,6 +57,11 @@
 - npm i shortid
 - npm i immer
 - npm i -D faker@5
+- (back) npm i express
+- (back) npm i sequelize sequelize-cli mysql2
+- (back) npm i -D nodemon@2
+- (back) npm i bcrypt
+- (back-only-dev-security-issue) npm i cors
 
 ------------
 ###### watched ZeroCho Contents on Inflearn :)
