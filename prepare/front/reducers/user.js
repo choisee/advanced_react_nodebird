@@ -90,7 +90,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
         case UNFOLLOW_SUCCESS:
             draft.unfollowLoading = false;
-            draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data);
+            draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data); // splice 활용
             draft.unfollowDone = true;
             break;
         case UNFOLLOW_FAILURE:

@@ -31,6 +31,8 @@
 - use immer (use-immer for hooks)
 - set dummy data using faker@5 (cf. dummy images https://placeholder.com/)
 - study redux-toolkit for shrink redux source code lines
+- study react-virtualized for infinite scrolling (ex. instagram)
+- add load data when web page scrolled (calculate when to load)
 
 ------------
 #### Used Commands
