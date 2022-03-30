@@ -36,6 +36,8 @@
 - run 'npx sequelize init' after install sequelize sequelize-cli
 - make models and run 'npx sequelize db:create'
 - use nodemon for auto refresh server
+- dev functions (posting includes multi image upload, pagination, follow, like, retweet)
+- set isAuthenticated, withCredentials for cookie
 
 ------------
 #### Used Commands
