@@ -2,7 +2,7 @@ import React, {useCallback, useState, useMemo, useEffect} from "react";
 import Head from "next/head";
 import {Button, Checkbox, Form, Input} from "antd";
 import useInput from "../hooks/useInput";
-import AppLayout from "../components/AppLayouts";
+import AppLayout from "../components/AppLayout";
 import styled from "styled-components";
 import {SIGN_UP_REQUEST} from "../reducers/user";
 import {useDispatch, useSelector} from "react-redux";
@@ -92,7 +92,7 @@ const Signup = () => {
 			type: SIGN_UP_REQUEST,
 			data: {email, password, nickname}
 		})
-	}, [email, nickname, password, term]);
+	}, [email, password, passwordCheck, term])
 
 	return (
 		<AppLayout>

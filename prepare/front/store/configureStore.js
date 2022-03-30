@@ -5,30 +5,31 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "../sagas/index";
 
-// redux-thunk 구소스 (cf. https://github.com/reduxjs/redux-thunk)
-const loggerMiddleware = ({dispatch, getState}) => (next) => (action) => {
-    console.log(action);
-    // // 지연 함수라 나중에 수행
-    // if(typeof action === 'function') {
-    //     return action(dispatch, getState);
-    // }
-    return next(action);
-}
+// // redux-thunk 구소스 (cf. https://github.com/reduxjs/redux-thunk)
+// const loggerMiddleware = ({dispatch, getState}) => (next) => (action) => {
+//     console.log(action);
+//     // // 지연 함수라 나중에 수행
+//     // if(typeof action === 'function') {
+//     //     return action(dispatch, getState);
+//     // }
+//     return next(action);
+// }
 
 const configureStore = () => {
     const sagaMiddleware = createSagaMiddleware();
-    const middlewares = [sagaMiddleware, loggerMiddleware];
+    const middlewares = [sagaMiddleware];
+    // const middlewares = [sagaMiddleware, loggerMiddleware];
     const enhancer = process.env.NODE_ENV === 'production'
         ? compose(applyMiddleware(...middlewares))
-        : composeWithDevTools(applyMiddleware(...middlewares)) // only develop mode - redux debugging 시 히스토리 추적을 위한 적용
+        : composeWithDevTools(applyMiddleware(...middlewares)); // only develop mode - redux debugging 시 히스토리 추적을 위한 적용
 
     const store = createStore(reducer, enhancer);
     store.sagaTask = sagaMiddleware.run(rootSaga);
 
-    store.dispatch({
-       type: 'CHANGE_NICKNAME',
-       data: 'ttest',
-    });
+    // store.dispatch({
+    //    type: 'CHANGE_NICKNAME',
+    //    data: 'ttest',
+    // });
     return store;
 };
 

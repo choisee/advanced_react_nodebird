@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PropsType from "prop-types";
+import PropTypes from "prop-types";
 import Link from "next/link";
 import { Menu, Input, Row, Col } from "antd";
 import UserProfile from "../components/UserProfile";
@@ -49,7 +49,7 @@ const AppLayout = ({ children }) => {
 }
 
 AppLayout.propTypes = {
-    children: PropsType.node.isRequired,
+    children: PropTypes.node.isRequired,
 };
 
 export default AppLayout;

@@ -2,12 +2,15 @@ const express = require("express");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const postRouter = require("./routes/post");
+const postsRouter = require('./routes/posts');
 const userRouter = require("./routes/user");
 const db = require("./models");
 const app = express();
 const passportConfig = require("./passport");
 const passport = require('passport');
 const dotenv = require('dotenv');
+const morgan = require('morgan');
+const path = require('path');
 
 const cors = require("cors");
 
@@ -24,6 +27,8 @@ db.sequelize
 
 passportConfig(); // 로그인용
 
+app.use(morgan('dev')); // 서버 디버깅
+
 // 요청/응답 데이터 처리용 코드 (ex. req.body.{data}) - 위치 주의
 
 // 아래는 개발용 임시 코드, 상용 배포시 제거
@@ -35,6 +40,7 @@ app.use(cors({
     credentials: true, // 쿠키도 같이 전달하기 위해 true로 변경 (포스트 등록시 401)
 }));
 
+app.use('/', express.static(path.join(__dirname, 'uploads'))); // 이미지 경로 localhost 3065
 app.use(express.json()); // front에서 json 형 데이터 줘서 그거 용도
 app.use(express.urlencoded({ extended: true })); // form - submit은 urlEncoded형식 데이터를 줘서 그거 용도
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -56,6 +62,7 @@ app.get('/', (req, res) => {
 // 라우터를 추가 하자
 app.use('/post', postRouter);
 app.use('/user', userRouter);
+app.use('/posts', postsRouter);
 
 // 에러처리 추가 가능
 

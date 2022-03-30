@@ -66,6 +66,8 @@
 - (back) npm i express-session
 - (back) npm i cookie-parser
 - (back) npm i dotenv
+- (back) npm i morgan
+- (back) npm i multer
 
 ------------
 ###### watched ZeroCho Contents on Inflearn :)

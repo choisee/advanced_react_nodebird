@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import AppLayout from "../components/AppLayouts";
+import AppLayout from "../components/AppLayout";
 import { useDispatch, useSelector } from "react-redux";
 import PostForm from "../components/PostForm";
 import PostCard from "../components/PostCard";
@@ -9,7 +9,13 @@ import { LOAD_USER_REQUEST } from "../reducers/user";
 const Home = () => {
 
 	const dispatch = useDispatch();
-	const {hasMorePosts, loadPostsLoading} = useSelector((state) => state.post);
+	const {hasMorePosts, loadPostsLoading, mainPosts, retweetError} = useSelector((state) => state.post);
+
+	useEffect(() => {
+		if (retweetError) {
+			alert(retweetError);
+		}
+	}, [retweetError]);
 
 	useEffect(() => {
 		dispatch({
@@ -26,10 +32,13 @@ const Home = () => {
 			console.log(window.scrollY, document.documentElement.clientHeight, document.documentElement.scrollHeight);
 
 			// 가장 아래 -300 스크롤 되었을 떄 미리 로딩
+			// if(window.pageYOffset + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300){
 			if(window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300){
 				if(hasMorePosts && !loadPostsLoading){ // loadPostsLoading로 이미 요청이 있다면 끝나고 요청수행
+					const lastId = mainPosts[mainPosts.length - 1]?.id;
 					dispatch({
 						type: LOAD_POSTS_REQUEST,
+						lastId,
 					})
 				}
 			}
@@ -38,10 +47,9 @@ const Home = () => {
 		return () => {
 			window.removeEventListener('scroll', onScroll);
 		};
-	},[hasMorePosts, loadPostsLoading]);
+	},[hasMorePosts, loadPostsLoading, mainPosts]);
 
 	const { me } = useSelector((state) => state.user);
-	const { mainPosts } = useSelector((state) => state.post);
 
 	return (
 		<AppLayout>

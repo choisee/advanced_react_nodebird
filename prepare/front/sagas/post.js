@@ -1,23 +1,33 @@
 import { fork, put, throttle, all, delay, takeLatest, call } from "redux-saga/effects";
 import axios from "axios";
 import {
-	ADD_COMMENT_FAILURE,
-	ADD_COMMENT_REQUEST,
-	ADD_COMMENT_SUCCESS,
-	ADD_POST_FAILURE,
-	ADD_POST_REQUEST,
-	ADD_POST_SUCCESS,
-	ADD_POST_TO_ME,
-	generateDummyPost,
-	REMOVE_POST_FAILURE,
-	REMOVE_POST_OF_ME,
-	REMOVE_POST_REQUEST,
-	REMOVE_POST_SUCCESS,
-	LOAD_POSTS_SUCCESS,
-	LOAD_POSTS_FAILURE,
-	LOAD_POSTS_REQUEST,
+    ADD_COMMENT_FAILURE,
+    ADD_COMMENT_REQUEST,
+    ADD_COMMENT_SUCCESS,
+    ADD_POST_FAILURE,
+    ADD_POST_REQUEST,
+    ADD_POST_SUCCESS,
+    generateDummyPost,
+    REMOVE_POST_FAILURE,
+    REMOVE_POST_REQUEST,
+    REMOVE_POST_SUCCESS,
+    LOAD_POSTS_SUCCESS,
+    LOAD_POSTS_FAILURE,
+    LOAD_POSTS_REQUEST,
+    UPLOAD_IMAGES_FAILURE,
+    LIKE_POST_SUCCESS,
+    LIKE_POST_FAILURE,
+    UPLOAD_IMAGES_SUCCESS,
+    RETWEET_FAILURE,
+    RETWEET_SUCCESS,
+    UNLIKE_POST_REQUEST,
+    UPLOAD_IMAGES_REQUEST,
+    LIKE_POST_REQUEST,
+    RETWEET_REQUEST,
+    UNLIKE_POST_SUCCESS, UNLIKE_POST_FAILURE,
 } from "../reducers/post";
 import shortId from "shortid";
+import {ADD_POST_TO_ME, REMOVE_POST_OF_ME} from "../reducers/user";
 
 
 function addPostAPI(data) {
@@ -55,40 +65,43 @@ function* addPost(action) {
 }
 
 
-function loadPostsAPI(data) {
-    return axios.post('/api/posts', data)
+function loadPostsAPI(lastId) {
+    return axios.get(`/posts?lastId=${lastId || 0}`);
 }
+
 function* loadPosts(action) {
     try {
-        yield delay(1000);
-
-        yield put ({
+        const result = yield call(loadPostsAPI, action.lastId);
+        yield put({
             type: LOAD_POSTS_SUCCESS,
-            data: generateDummyPost(10),
-        })
-
+            data: result.data,
+            // data: generateDummyPost(10),
+        });
     } catch (err) {
+        console.error(err);
         yield put({
             type: LOAD_POSTS_FAILURE,
-            data: err.response.data,
-        })
+            error: err.response.data,
+        });
     }
 }
 
 
+
 function removePostAPI(data) {
-    return axios.delete('/api/post', data)
+    return axios.delete(`/post/${data}`);
 }
 
 function* removePost(action) {
     try {
-        yield delay(1000);
+        const result = yield call(removePostAPI, action.data);
+        // yield delay(1000);
 
-        console.log('removePost--', action);
+        // console.log('removePost--', action);
         // const result = yield fork(removePostAPI, action.data)
         yield put ({
             type: REMOVE_POST_SUCCESS,
-            data: action.data,
+            data: result.data,
         })
 
         yield put ({
@@ -114,11 +127,13 @@ function* addComment(action) {
         // yield delay(1000);
         const result = yield call(addCommentAPI, action.data);
 
+        console.log('addComment-saga', result);
         yield put ({
             type: ADD_COMMENT_SUCCESS,
             data: result.data,
         })
     } catch (err) {
+        console.error(err);
         yield put ({
             type: ADD_COMMENT_FAILURE,
             data: err.response.data,
@@ -126,6 +141,89 @@ function* addComment(action) {
     }
 }
 
+function retweetAPI(data) {
+    return axios.post(`/post/${data}/retweet`);
+}
+
+function* retweet(action) {
+    try {
+        console.log('retweet----action-', action)
+
+        const result = yield call(retweetAPI, action.data);
+        console.log('retweet----result-', result)
+
+        yield put({
+            type: RETWEET_SUCCESS,
+            data: result.data,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: RETWEET_FAILURE,
+            error: err.response.data,
+        });
+    }
+}
+
+function uploadImagesAPI(data) {
+    return axios.post('/post/images', data); // form data는 그대로 전달 {data:data} 하면 json이 되어 넘어감
+}
+
+function* uploadImages(action) {
+    try {
+        const result = yield call(uploadImagesAPI, action.data);
+        yield put({
+            type: UPLOAD_IMAGES_SUCCESS,
+            data: result.data,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: UPLOAD_IMAGES_FAILURE,
+            error: err.response.data,
+        });
+    }
+}
+
+function likePostAPI(data) {
+    return axios.patch(`/post/${data}/like`); // 게시글의 일부분 수정이라 patch
+}
+
+function* likePost(action) {
+    try {
+        const result = yield call(likePostAPI, action.data);
+        yield put({
+            type: LIKE_POST_SUCCESS,
+            data: result.data,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: LIKE_POST_FAILURE,
+            error: err.response.data,
+        });
+    }
+}
+
+function unlikePostAPI(data) {
+    return axios.delete(`/post/${data}/like`);
+}
+
+function* unlikePost(action) {
+    try {
+        const result = yield call(unlikePostAPI, action.data);
+        yield put({
+            type: UNLIKE_POST_SUCCESS,
+            data: result.data,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: UNLIKE_POST_FAILURE,
+            error: err.response.data,
+        });
+    }
+}
 
 function* watchAddPost() {
     yield takeLatest(ADD_POST_REQUEST, addPost);
@@ -141,10 +239,25 @@ function* watchRemovePost() {
 }
 
 function* watchAddComment() {
-    yield throttle(10 * 1000, ADD_COMMENT_REQUEST, addComment); // 10 sec
+    yield takeLatest(ADD_COMMENT_REQUEST, addComment);
+    // yield throttle(10 * 1000, ADD_COMMENT_REQUEST, addComment); // 10 sec
 }
 
+function* watchRetweet() {
+    yield takeLatest(RETWEET_REQUEST, retweet);
+}
 
+function* watchUploadImages() {
+    yield takeLatest(UPLOAD_IMAGES_REQUEST, uploadImages);
+}
+
+function* watchLikePost() {
+    yield takeLatest(LIKE_POST_REQUEST, likePost);
+}
+
+function* watchUnlikePost() {
+    yield takeLatest(UNLIKE_POST_REQUEST, unlikePost);
+}
 
 export default function* userSaga() {
     yield all ([
@@ -152,5 +265,9 @@ export default function* userSaga() {
         fork(watchLoadPost),
         fork(watchRemovePost),
         fork(watchAddComment),
+        fork(watchRetweet),
+        fork(watchUploadImages),
+        fork(watchLikePost),
+        fork(watchUnlikePost),
     ])
 }
