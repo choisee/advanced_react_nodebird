@@ -3,10 +3,12 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 
 const { User, Post } = require('../models'); // db.User
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const router = express.Router();
 
+
 // 미들웨어 확장법 (req, rex, next) => {passport.authenticate... } 사용 : express 문법
-router.post('/login', (req, res, next) => {
+router.post('/login', isNotLoggedIn, (req, res, next) => {
 
     passport.authenticate('local', (err, user, info) => {
 
@@ -42,7 +44,7 @@ router.post('/login', (req, res, next) => {
                 }, {
                     model: User,
                     as: 'Followers',
-                    attributes: ['id'],
+                    attributes: ['id'], // 특정 데이터만 가지고 옴 (User의 id 컬럼 데이터만 필요함)
                 }]
             })
             return res.status(200).json(fullUserWithoutPassword);
@@ -52,9 +54,40 @@ router.post('/login', (req, res, next) => {
 });
 
 
+// GET /user
+router.get('/', async (req, res, next) => { // GET /user
+    try {
+        if (req.user) {
+            const fullUserWithoutPassword = await User.findOne({
+                where: { id: req.user.id },
+                attributes: {
+                    exclude: ['password']
+                },
+                include: [{
+                    model: Post,
+                    attributes: ['id'],
+                }, {
+                    model: User,
+                    as: 'Followings',
+                    attributes: ['id'],
+                }, {
+                    model: User,
+                    as: 'Followers',
+                    attributes: ['id'],
+                }]
+            })
+            res.status(200).json(fullUserWithoutPassword);
+        } else {
+            res.status(200).json(null);
+        }
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
 
 // POST /user
-router.post('/', async(req,res, next) => {
+router.post('/', isNotLoggedIn, async(req,res, next) => {
 
     try {
         // 비동기면 await 추가, 호출 순서 보장을 위함
@@ -88,5 +121,10 @@ router.post('/', async(req,res, next) => {
 
 });
 
+router.post('/logout', isLoggedIn, (req, res) => {
+    req.logout();
+    req.session.destroy();
+    res.send('ok');
+});
 
 module.exports = router;

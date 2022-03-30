@@ -4,6 +4,8 @@ import postSaga from './post';
 import userSaga from './user';
 
 axios.defaults.baseURL = "http://localhost:3065";
+axios.defaults.withCredentials = true; // 프런트~ 백엔드간에 민감정보(쿠키) 보내기 허용
+
 
 export default function* rootSaga() {
     console.log('rootSaga')

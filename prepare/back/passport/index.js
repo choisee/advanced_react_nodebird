@@ -9,6 +9,7 @@ module.exports = () => {
 
     });
 
+    // 라우터 접근 전에 한번씩 실행하여, 사용자 정보 복구함 (req.user)
     passport.deserializeUser(async(id, done) => {
         try {
             const user = await User.findOne({ where: { id } });

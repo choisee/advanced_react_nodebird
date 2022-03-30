@@ -14,7 +14,7 @@ const UserProfile = () => {
 
     return (
         <>
-        {console.log('UserProfile-----', me.Posts)}
+        {/*{console.log('UserProfile-----', me.Posts)}*/}
         <Card actions = {[
             <div key="twit">짹짹<br />{me.Posts.length}</div>,
             <div key="followings">팔로잉<br />{me.Followings.length}</div>,

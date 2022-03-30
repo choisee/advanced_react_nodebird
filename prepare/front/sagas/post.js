@@ -1,4 +1,4 @@
-import { fork, put, throttle, all, delay, takeLatest } from "redux-saga/effects";
+import { fork, put, throttle, all, delay, takeLatest, call } from "redux-saga/effects";
 import axios from "axios";
 import {
 	ADD_COMMENT_FAILURE,
@@ -20,28 +20,31 @@ import {
 import shortId from "shortid";
 
 
-function addPostAPI() {
-    return axios.post('/api/post')
+function addPostAPI(data) {
+    console.log('------addPostAPI: ', data);
+    return axios.post('/post', data);
+
+    // 아래 코드는 saga/index 에 공통 설정으로 axios에 적용함
+    // // 쿠키도 같이 전달하기 위해 true 전달 (포스트 등록시 401) - withCredentials
+    // return axios.post('/post', { content : data}, { withCredentials: true});
+
 }
 function* addPost(action) {
     try {
         console.log('addPost-saga');
-        yield delay(1000);
-        const id = shortId.generate();
+        // yield delay(1000);
+        // const id = shortId.generate();
 
-        // const result = yield fork(addPostAPI, action.data)
-        yield put ({
+        const result = yield call(addPostAPI, action.data);
+        yield put({
             type: ADD_POST_SUCCESS,
-            data: {
-                id: id,
-                content: action.data
-            },
-        })
+            data: result.data,
+        });
 
         // user reducer 데이터 변경을 위한 액션
         yield put ({
             type: ADD_POST_TO_ME,
-            data: id,
+            data: result.data.id,
         })
     } catch (err) {
         yield put({
@@ -102,18 +105,18 @@ function* removePost(action) {
 
 
 function addCommentAPI(data) {
-    return axios.post(`/api/post/${data.postId}/comment`, data);
+    return axios.post(`/post/${data.postId}/comment`, data); // POST /post/1/comment
 }
 
 function* addComment(action) {
     try {
         console.log('addComment-saga');
-        yield delay(1000);
+        // yield delay(1000);
+        const result = yield call(addCommentAPI, action.data);
 
-        // const result = yield fork(addPostAPI, action.data)
         yield put ({
             type: ADD_COMMENT_SUCCESS,
-            data: action.data,
+            data: result.data,
         })
     } catch (err) {
         yield put ({

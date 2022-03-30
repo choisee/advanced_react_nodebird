@@ -28,8 +28,11 @@ passportConfig(); // 로그인용
 
 // 아래는 개발용 임시 코드, 상용 배포시 제거
 app.use(cors({
-    origin: '*',
-    credentials: false,
+    // 아래 오류 해결을 위해 origin: "*" 설정 수정
+    // 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.
+    // origin: 'http://localhost:3060', 정확히 적거나 아래 처럼 true를 적거나
+    origin: true,
+    credentials: true, // 쿠키도 같이 전달하기 위해 true로 변경 (포스트 등록시 401)
 }));
 
 app.use(express.json()); // front에서 json 형 데이터 줘서 그거 용도
@@ -54,6 +57,7 @@ app.get('/', (req, res) => {
 app.use('/post', postRouter);
 app.use('/user', userRouter);
 
+// 에러처리 추가 가능
 
 
 app.listen(3065, () => {
