@@ -20,21 +20,17 @@ import {
 
 
 function logInAPI(data) {
-    return axios.post('/api/login')
-}
-function logOutAPI() {
-    return axios.post('/api/logout')
+    return axios.post('/user/login', data)
 }
 
 function* logIn(action) {
     try {
-        console.log('saga-logIn', action.data)
-
-        yield delay(1000);
+        console.log('saga-logIn', action)
+        const result = yield call(logInAPI, action.data);
 
         yield put ({
             type: LOG_IN_SUCCESS,
-            data: action.data
+            data: result.data
         })
     } catch (err) {
         yield put ({
@@ -44,14 +40,18 @@ function* logIn(action) {
     }
 }
 
+function logOutAPI() {
+    return axios.post('/user/logout')
+}
+
 function* logOut() {
     try {
-        const result = yield fork(logOutAPI)
+        yield call(logOutAPI);
         yield put ({
             type: LOG_OUT_SUCCESS,
-            data: result.data
         })
     } catch (err) {
+        console.error(err);
         yield put ({
             type: LOG_OUT_FAILURE,
             error: err.response.data,
@@ -60,12 +60,12 @@ function* logOut() {
 }
 
 function signUpAPI(data) {
-    return axios.post('http://localhost:3065/user', data); // data = {email,password,nickname}
+    return axios.post('/user', data); // data = {email,password,nickname}
 }
 
 function* signUp(action) {
     try {
-        console.log('saga-logIn')
+        console.log('saga-signUp', action)
 
         // yield delay(1000);
         // throw new Error();

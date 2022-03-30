@@ -62,6 +62,10 @@
 - (back) npm i -D nodemon@2
 - (back) npm i bcrypt
 - (back-only-dev-security-issue) npm i cors
+- (back) npm i passport passport-local
+- (back) npm i express-session
+- (back) npm i cookie-parser
+- (back) npm i dotenv
 
 ------------
 ###### watched ZeroCho Contents on Inflearn :)

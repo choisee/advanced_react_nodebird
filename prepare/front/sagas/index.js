@@ -1,7 +1,9 @@
 import { all, fork, call, put, take, delay, debounce, throttle, takeLatest, takeMaybe, takeEvery } from "redux-saga/effects";
-// import axios from 'axios';
+import axios from 'axios';
 import postSaga from './post';
 import userSaga from './user';
+
+axios.defaults.baseURL = "http://localhost:3065";
 
 export default function* rootSaga() {
     console.log('rootSaga')

@@ -1,9 +1,18 @@
-const express = require('express');
-const postRouter = require('./routes/post');
-const userRouter = require('./routes/user');
-const db = require('./models');
+const express = require("express");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+const postRouter = require("./routes/post");
+const userRouter = require("./routes/user");
+const db = require("./models");
 const app = express();
-const cors = require('cors');
+const passportConfig = require("./passport");
+const passport = require('passport');
+const dotenv = require('dotenv');
+
+const cors = require("cors");
+
+
+dotenv.config();
 
 // db 연결용 코드
 db.sequelize
@@ -12,6 +21,8 @@ db.sequelize
     console.log("db 연결 성공;");
   })
   .catch(console.error);
+
+passportConfig(); // 로그인용
 
 // 요청/응답 데이터 처리용 코드 (ex. req.body.{data}) - 위치 주의
 
@@ -23,16 +34,19 @@ app.use(cors({
 
 app.use(express.json()); // front에서 json 형 데이터 줘서 그거 용도
 app.use(express.urlencoded({ extended: true })); // form - submit은 urlEncoded형식 데이터를 줘서 그거 용도
-
-
-
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(session({
+    saveUninitialized: false,
+    resave: false,
+    secret: process.env.COOKIE_SECRET, // 쿠키에 보내주는 랜덤 문자열(ex. cxlhy) 복원용 키
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 app.get('/', (req, res) => {
-    res.send('hello express1')
+    res.send('hello express')
 });
-
-
 
 
 

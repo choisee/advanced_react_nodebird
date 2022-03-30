@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { Form, Input, Button } from "antd";
 import Link from "next/link";
 import styled from "styled-components";
@@ -17,10 +17,17 @@ const ButtonWrapper = styled.div`
 
 const LoginForm = () => {
 	const dispatch = useDispatch();
-	const { logInLoading } = useSelector((state) => state.user);
+	const { logInLoading, logInError } = useSelector((state) => state.user);
 
 	const [email, onChangeEmail] = useInput('');
 	const [password, onChangePassword] = useInput('');
+
+    useEffect(() => {
+        console.log('LoginForm', logInError);
+        if (logInError) {
+            alert(logInError);
+        }
+    }, [logInError]);
 
 	// 커스텀 훅 적용
 	// const [id, setId] = useState("");
