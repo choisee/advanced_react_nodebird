@@ -13,11 +13,15 @@ const PostImages = ({ images }) => {
 		setShowImagesZoom(false);
 	}, []);
 
-
 	if (images.length === 1) {
 		return (
 			<>
-				<img role="presentation" src={`http://localhost:3065/${images[0].src}`} alt={images[0].src} onClick={onZoom} />
+				<img
+					role="presentation"
+					src={`http://localhost:3065/${images[0].src}`}
+					alt={images[0].src}
+					onClick={onZoom}
+				/>
 				{showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
 			</>
 		);
@@ -78,6 +82,5 @@ PostImages.propTypes = {
 };
 
 export default PostImages;
-
 
 // role="presentation" 접근성때문에 넣음, 굳이 onclick하지 않아도 되는 항목 (버튼 등이 아닌 항목)

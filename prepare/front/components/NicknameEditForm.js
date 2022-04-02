@@ -1,13 +1,13 @@
-import { Form, Input } from 'antd';
-import React, { useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { Form, Input } from "antd";
+import React, { useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
-import useInput from '../hooks/useInput';
-import { CHANGE_NICKNAME_REQUEST } from '../reducers/user';
+import useInput from "../hooks/useInput";
+import { CHANGE_NICKNAME_REQUEST } from "../reducers/user";
 
 const NicknameEditForm = () => {
 	const { me } = useSelector((state) => state.user);
-	const [nickname, onChangeNickname] = useInput(me?.nickname || '');
+	const [nickname, onChangeNickname] = useInput(me?.nickname || "");
 	const dispatch = useDispatch();
 
 	const onSubmit = useCallback(() => {
@@ -18,7 +18,7 @@ const NicknameEditForm = () => {
 	}, [nickname]);
 
 	return (
-		<Form style={{ marginBottom: '20px', border: '1px solid #d9d9d9', padding: '20px' }}>
+		<Form style={{ marginBottom: "20px", border: "1px solid #d9d9d9", padding: "20px" }}>
 			<Input.Search
 				value={nickname}
 				onChange={onChangeNickname}

@@ -1,15 +1,26 @@
-import { all, fork, call, put, take, delay, debounce, throttle, takeLatest, takeMaybe, takeEvery } from "redux-saga/effects";
-import axios from 'axios';
-import postSaga from './post';
-import userSaga from './user';
+import {
+	all,
+	fork,
+	call,
+	put,
+	take,
+	delay,
+	debounce,
+	throttle,
+	takeLatest,
+	takeMaybe,
+	takeEvery,
+} from "redux-saga/effects";
+import axios from "axios";
+import postSaga from "./post";
+import userSaga from "./user";
 
 axios.defaults.baseURL = "http://localhost:3065";
 axios.defaults.withCredentials = true; // 프런트~ 백엔드간에 민감정보(쿠키) 보내기 허용
 
-
 export default function* rootSaga() {
-    console.log('rootSaga')
-    yield all([fork(postSaga), fork(userSaga)]);
+	console.log("rootSaga");
+	yield all([fork(postSaga), fork(userSaga)]);
 }
 
 // saga 분리함
@@ -121,7 +132,6 @@ export default function* rootSaga() {
 // 	yield all([fork(watchLogIn), fork(watchLogOut), fork(watchAddPost)]);
 // }
 
-
 // saga generator
 
 // generator 란, 제너레이터를 사용하면 yield를 사용하여 함수를 수행하다 멈출 수 있음
@@ -169,4 +179,3 @@ export default function* rootSaga() {
 // fork vs call = 비동기 함수 호출 vs 동기 함수 호출
 
 // throttle vs debounce (cf. https://www.zerocho.com/category/JavaScript/post/59a8e9cb15ac0000182794fa)
-

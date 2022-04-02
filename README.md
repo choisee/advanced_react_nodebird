@@ -38,6 +38,14 @@
 - use nodemon for auto refresh server
 - dev functions (posting includes multi image upload, pagination, follow, like, retweet)
 - set isAuthenticated, withCredentials for cookie
+- use getServerSideProps for SSR and edit for cookie
+- test getStaticProps
+- dynamic routing
+- use moment for date
+- use swr for retrieve
+- set shortcut icon
+- learn cross-env for ie 11
+- bundle-analyzer at the end and handle big files
 
 ------------
 #### Used Commands
@@ -70,6 +78,11 @@
 - (back) npm i dotenv
 - (back) npm i morgan
 - (back) npm i multer
+- npm i moment
+- npm i swr
+- npm i -D babel-plugin-styled-components
+- npm i cross-env
+- npm i @next/bundle-analyzer
 
 ------------
 ###### watched ZeroCho Contents on Inflearn :)

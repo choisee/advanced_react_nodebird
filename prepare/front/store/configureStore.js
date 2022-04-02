@@ -16,30 +16,29 @@ import rootSaga from "../sagas/index";
 // }
 
 const configureStore = () => {
-    const sagaMiddleware = createSagaMiddleware();
-    const middlewares = [sagaMiddleware];
-    // const middlewares = [sagaMiddleware, loggerMiddleware];
-    const enhancer = process.env.NODE_ENV === 'production'
-        ? compose(applyMiddleware(...middlewares))
-        : composeWithDevTools(applyMiddleware(...middlewares)); // only develop mode - redux debugging 시 히스토리 추적을 위한 적용
+	const sagaMiddleware = createSagaMiddleware();
+	const middlewares = [sagaMiddleware];
+	// const middlewares = [sagaMiddleware, loggerMiddleware];
+	const enhancer =
+		process.env.NODE_ENV === "production"
+			? compose(applyMiddleware(...middlewares))
+			: composeWithDevTools(applyMiddleware(...middlewares)); // only develop mode - redux debugging 시 히스토리 추적을 위한 적용
 
-    const store = createStore(reducer, enhancer);
-    store.sagaTask = sagaMiddleware.run(rootSaga);
+	const store = createStore(reducer, enhancer);
+	store.sagaTask = sagaMiddleware.run(rootSaga);
 
-    // store.dispatch({
-    //    type: 'CHANGE_NICKNAME',
-    //    data: 'ttest',
-    // });
-    return store;
+	// store.dispatch({
+	//    type: 'CHANGE_NICKNAME',
+	//    data: 'ttest',
+	// });
+	return store;
 };
 
-
 const wrapper = createWrapper(configureStore, {
-    debug: process.env.NODE_ENV === 'development',
+	debug: process.env.NODE_ENV === "development",
 });
 
 export default wrapper;
-
 
 // 여러 컴포넌트들에서 공통적으로 쓰이는 데이터가 흩어져 있어야하고, 모으려면 부모로 모아서 자식으로 각각 보내줘야함
 // 매번 수동으로 위의 작업을 하기엔 귀찮다

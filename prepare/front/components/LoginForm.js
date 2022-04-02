@@ -19,15 +19,15 @@ const LoginForm = () => {
 	const dispatch = useDispatch();
 	const { logInLoading, logInError } = useSelector((state) => state.user);
 
-	const [email, onChangeEmail] = useInput('');
-	const [password, onChangePassword] = useInput('');
+	const [email, onChangeEmail] = useInput("");
+	const [password, onChangePassword] = useInput("");
 
-    useEffect(() => {
-        console.log('LoginForm', logInError);
-        if (logInError) {
-            alert(logInError);
-        }
-    }, [logInError]);
+	useEffect(() => {
+		// console.log('LoginForm', logInError);
+		if (logInError) {
+			alert(logInError);
+		}
+	}, [logInError]);
 
 	// 커스텀 훅 적용
 	// const [id, setId] = useState("");
@@ -40,38 +40,44 @@ const LoginForm = () => {
 	// 	setPassword(e.target.value);
 	// }, []);
 
-	const styles = useMemo(() => ({ paddingBottom: '5px' }), []);
-	const loginFormstyles = useMemo(() => ({ padding: '10px' }), []);
+	const styles = useMemo(() => ({ paddingBottom: "5px" }), []);
+	const loginFormstyles = useMemo(() => ({ padding: "10px" }), []);
 
 	const onSubmitForm = useCallback(() => {
 		// e.preventDefault(); // 이미 적용되어있어서 생략
-		console.log(email, password);
+		// console.log(email, password);
 		dispatch(loginRequestAction({ email, password }));
 	}, [email, password]);
 
 	return (
-  <Form style={loginFormstyles} onFinish={onSubmitForm}>
-    <div>
-      <label htmlFor="user-email">이메일</label>
-      <br />
-      <input name="user-email" type="email" value={email} onChange={onChangeEmail} required />
-    </div>
-    <div>
-      <label htmlFor="user-password">비밀번호</label>
-      <br />
-      <Input name="user-password" type="password" value={password} onChange={onChangePassword} required />
-    </div>
-    <ButtonWrapper style={styles}>
-      <Button type="primary" htmlType="submit" loading={logInLoading}>
-        로그인
-      </Button>
-      <Link href="/signup">
-        <a>
-          <Button>회원가입</Button>
-        </a>
-      </Link>
-    </ButtonWrapper>
-  </Form>
+		<Form style={loginFormstyles} onFinish={onSubmitForm}>
+			<div>
+				<label htmlFor="user-email">이메일</label>
+				<br />
+				<input name="user-email" type="email" value={email} onChange={onChangeEmail} required />
+			</div>
+			<div>
+				<label htmlFor="user-password">비밀번호</label>
+				<br />
+				<Input
+					name="user-password"
+					type="password"
+					value={password}
+					onChange={onChangePassword}
+					required
+				/>
+			</div>
+			<ButtonWrapper style={styles}>
+				<Button type="primary" htmlType="submit" loading={logInLoading}>
+					로그인
+				</Button>
+				<Link href="/signup">
+					<a>
+						<Button>회원가입</Button>
+					</a>
+				</Link>
+			</ButtonWrapper>
+		</Form>
 	);
 };
 
