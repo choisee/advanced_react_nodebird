@@ -3,6 +3,7 @@ node_modules/
 .DS_Store
 .next/
 prepare/back/uploads/
+react-nodebird.pem
 
 # dotenv environment variables file
 .env
