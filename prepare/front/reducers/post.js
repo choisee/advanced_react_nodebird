@@ -209,7 +209,8 @@ const reducer = (state = initialState, action) =>
 				draft.uploadImagesError = null;
 				break;
 			case UPLOAD_IMAGES_SUCCESS: {
-				draft.imagePaths = action.data;
+				draft.imagePaths = draft.imagePaths.concat(action.data); //aws s3
+				// draft.imagePaths = action.data; // local
 				draft.uploadImagesLoading = false;
 				draft.uploadImagesDone = true;
 				break;
