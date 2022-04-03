@@ -84,7 +84,8 @@
 - npm i -D babel-plugin-styled-components
 - npm i cross-env
 - npm i @next/bundle-analyzer
-- (back) npm i hpp helmet pm2
+- (back) npm i hpp helmet pm2 cross-env
+- (both) npm i pm2
 
 ------------
 ###### watched ZeroCho Contents on Inflearn :)

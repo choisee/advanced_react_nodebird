@@ -48,7 +48,7 @@ app.use(
     // 아래 오류 해결을 위해 origin: "*" 설정 수정
     // 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.
     // origin: 'http://localhost:3060', 정확히 적거나 아래 처럼 true를 적거나
-    origin: ['http://localhost:3060', 'nodebird.com'],
+    origin: ['http://localhost:3065', 'nodebird.com'],
     // origin: true,
     credentials: true, // 쿠키도 같이 전달하기 위해 true로 변경 (포스트 등록시 401)
   })
