@@ -47,6 +47,7 @@
 - learn cross-env for ie 11
 - bundle-analyzer at the end and handle big files
 - things for deploy aws
+- set aws multer
 
 ------------
 #### Used Commands
@@ -86,6 +87,8 @@
 - npm i @next/bundle-analyzer
 - (back) npm i hpp helmet pm2 cross-env
 - (both) npm i pm2
+- (back) npm i multer-s3 aws-sdk
+
 
 ------------
 ###### watched ZeroCho Contents on Inflearn :)

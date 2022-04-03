@@ -29,15 +29,6 @@ db.sequelize
 
 passportConfig(); // 로그인용
 
-if(process.env.NODE_ENV === 'production') {
-    app.use(morgan('combined'));
-    // 보안용 패키지들
-    app.use(hpp());
-    app.use(helmet())
-} else {
-    app.use(morgan('dev'));
-}
-
 // app.use(morgan("dev")); // 서버 디버깅
 
 // 요청/응답 데이터 처리용 코드 (ex. req.body.{data}) - 위치 주의
