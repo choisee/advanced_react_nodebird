@@ -46,6 +46,7 @@
 - set shortcut icon
 - learn cross-env for ie 11
 - bundle-analyzer at the end and handle big files
+- things for deploy aws
 
 ------------
 #### Used Commands
@@ -83,6 +84,7 @@
 - npm i -D babel-plugin-styled-components
 - npm i cross-env
 - npm i @next/bundle-analyzer
+- (back) npm i hpp helmet pm2
 
 ------------
 ###### watched ZeroCho Contents on Inflearn :)

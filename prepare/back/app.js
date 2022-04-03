@@ -12,6 +12,8 @@ const passport = require("passport");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const path = require("path");
+const hpp = require('hpp');
+const helmet = require('helmet');
 
 const cors = require("cors");
 
@@ -27,7 +29,16 @@ db.sequelize
 
 passportConfig(); // 로그인용
 
-app.use(morgan("dev")); // 서버 디버깅
+if(process.env.NODE_ENV === 'production') {
+    app.use(morgan('combined'));
+    // 보안용 패키지들
+    app.use(hpp());
+    app.use(helmet())
+} else {
+    app.use(morgan('dev'));
+}
+
+// app.use(morgan("dev")); // 서버 디버깅
 
 // 요청/응답 데이터 처리용 코드 (ex. req.body.{data}) - 위치 주의
 
@@ -37,7 +48,8 @@ app.use(
     // 아래 오류 해결을 위해 origin: "*" 설정 수정
     // 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.
     // origin: 'http://localhost:3060', 정확히 적거나 아래 처럼 true를 적거나
-    origin: true,
+    origin: ['http://localhost:3060', 'nodebird.com'],
+    // origin: true,
     credentials: true, // 쿠키도 같이 전달하기 위해 true로 변경 (포스트 등록시 401)
   })
 );
@@ -68,7 +80,7 @@ app.use("/hashtag", hashtagRouter); // 선언 안하면 못찾음 Error: Error s
 
 // 에러처리 추가 가능
 
-app.listen(3065, () => {
+app.listen(80, () => {
   console.log("*** 서버 실행 중 ***");
 });
 
